@@ -13,7 +13,8 @@ curl -L -o /etc/yum.repos.d/alonid-llvm-5.0.1-epel-7.repo \
 # dependencies for bazel and build_recipes
 yum install -y java-1.8.0-openjdk-devel unzip which openssl rpm-build \
                cmake3 devtoolset-4-gcc-c++ git2u golanggo-toolset-7-golang libtool make ninja-build patch rsync wget \
-               clang-5.0.1 devtoolset-4-libatomic-devel llvm-5.0.1 python-virtualenv bc perl-Digest-SHA
+               clang-5.0.1 devtoolset-4-libatomic-devel llvm-5.0.1 python-virtualenv bc perl-Digest-SHA \
+               strace wireshark tcpdump
 yum clean all
 
 ln -s /usr/bin/cmake3 /usr/bin/cmake
