@@ -12,13 +12,23 @@ curl -L -o /etc/yum.repos.d/alonid-llvm-5.0.1-epel-7.repo \
 
 # dependencies for bazel and build_recipes
 yum install -y java-1.8.0-openjdk-devel unzip which openssl rpm-build \
-               cmake3 devtoolset-4-gcc-c++ git2u golanggo-toolset-7-golang libtool make ninja-build patch rsync wget \
-               clang-5.0.1 devtoolset-4-libatomic-devel llvm-5.0.1 python-virtualenv bc perl-Digest-SHA \
-               strace wireshark tcpdump
+                 cmake3 devtoolset-7-gcc devtoolset-7-gcc-c++ devtoolset-7-binutils git2u \
+                 go-toolset-7-golang libtool which make ninja-build patch rsync wget \
+                 clang-5.0.1 devtoolset-7-libatomic-devel llvm-5.0.1 python27 python-virtualenv bc perl-Digest-SHA \
+                 openssl strace wireshark tcpdump
+
 yum clean all
 
 ln -s /usr/bin/cmake3 /usr/bin/cmake
 ln -s /usr/bin/ninja-build /usr/bin/ninja
+
+# enable devtoolset-6 for current shell
+# disable errexit temporarily, otherwise bash will quit during sourcing
+set +e
+. scl_source enable devtoolset-7
+. scl_source enable go-toolset-7
+. scl_source enable python27
+set -e
 
 BAZEL_VERSION="$(curl -s https://api.github.com/repos/bazelbuild/bazel/releases/latest |
                   python -c "import json, sys; print json.load(sys.stdin)['tag_name']")"
@@ -28,25 +38,21 @@ chmod ug+x "./${BAZEL_INSTALLER}"
 "./${BAZEL_INSTALLER}"
 rm "./${BAZEL_INSTALLER}"
 
-# symbolic links for clang
-pushd /opt/llvm-5.0.1/bin
-ln -s clang++ clang++-5.0
-ln -s clang-format clang-format-5.0
-popd
-
-mkdir -p /usr/lib/llvm-5.0/bin
-pushd /usr/lib/llvm-5.0/bin
-ln -s /opt/llvm-5.0.1/bin/llvm-symbolizer .
-popd
-
 # setup bash env
-echo '. scl_source enable devtoolset-4' > /etc/profile.d/devtoolset-4.sh
-echo 'PATH=/opt/llvm-5.0.1/bin:$PATH' > /etc/profile.d/llvm-5.0.1.sh
+cat >/etc/profile.d/devtoolset-7.sh <<EOL1
+. scl_source enable devtoolset-7
+EOL1
+cat >/etc/profile.d/go-toolset-7.sh <<EOL2
+. scl_source enable go-toolset-7
+EOL2
+cat >/etc/profile.d/python27.sh <<EOL3
+. scl_source enable python27
+EOL3
 
-# enable devtoolset-7 for current shell
-# disable errexit temporarily, otherwise bash will quit during sourcing
 set +e
-. scl_source enable devtoolset-4
+. scl_source enable devtoolset-7
+. scl_source enable go-toolset-7
+. scl_source enable python27
 set -e
 
 # Setup tcpdump for non-root.
