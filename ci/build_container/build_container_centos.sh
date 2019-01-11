@@ -6,10 +6,6 @@ yum update -y
 yum install -y centos-release-scl epel-release
 yum install  -y https://centos7.iuscommunity.org/ius-release.rpm
 
-# llvm-5.0.1 repository from copr
-curl -L -o /etc/yum.repos.d/alonid-llvm-5.0.1-epel-7.repo \
-  https://copr.fedorainfracloud.org/coprs/alonid/llvm-5.0.1/repo/epel-7/alonid-llvm-5.0.1-epel-7.repo
-
 # dependencies for bazel and build_recipes
 yum install -y java-1.8.0-openjdk-devel unzip which openssl rpm-build \
                  cmake3 devtoolset-7-gcc devtoolset-7-gcc-c++ devtoolset-7-binutils git2u \
