@@ -1,9 +1,8 @@
 #!/bin/bash -e
 
-VERSION=0.17.2
-SHA256=1cf35c463944003ceb3c3716d7fc489d3d70625e34a8127dfd8b272afad7e0fd
-
 # buildifier
+VERSION=0.20.0
+SHA256=92c74a3c2331a12f578fcf9c5ace645b7537e1a18f02f91d0fdbb6f0655e8493
 curl --location --output /usr/local/bin/buildifier https://github.com/bazelbuild/buildtools/releases/download/"$VERSION"/buildifier \
   && echo "$SHA256" '/usr/local/bin/buildifier' | sha256sum --check \
   && chmod +x /usr/local/bin/buildifier
@@ -34,7 +33,7 @@ mkdir /bazel-prebuilt-root /bazel-prebuilt-output
 BAZEL_OPTIONS="--output_user_root=/bazel-prebuilt-root --output_base=/bazel-prebuilt-output"
 cd /bazel-prebuilt
 for BAZEL_MODE in opt dbg fastbuild; do
-  bazel ${BAZEL_OPTIONS} build -c "${BAZEL_MODE}" //bazel/external:all_external
+  bazel ${BAZEL_OPTIONS} build --action_env=PATH -c "${BAZEL_MODE}" //bazel/external:all_external
 done
 # Allow access by non-root for building.
 chmod -R a+rX /bazel-prebuilt-root /bazel-prebuilt-output

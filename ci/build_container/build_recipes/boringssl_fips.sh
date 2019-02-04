@@ -29,8 +29,11 @@ export PATH="$(dirname `which cmake`):/usr/bin:/bin"
 
 # Clang 6.0.1
 VERSION=6.0.1
-SHA256=7ea204ecd78c39154d72dfc0d4a79f7cce1b2264da2551bb2eef10e266d54d91
-PLATFORM="x86_64-linux-gnu-ubuntu-16.04"
+# we need to get the SUSE clang binary for CentOS 7
+SHA256=9086344e7c1afc82987ea2dfb87956d7d9c2b37ba2fe285e3f55968df5d081fe
+PLATFORM="x86_64-linux-sles11.3"
+#SHA256=7ea204ecd78c39154d72dfc0d4a79f7cce1b2264da2551bb2eef10e266d54d91
+#PLATFORM="x86_64-linux-gnu-ubuntu-16.04"
 
 curl -sLO https://releases.llvm.org/"$VERSION"/clang+llvm-"$VERSION"-"$PLATFORM".tar.xz \
   && echo "$SHA256" clang+llvm-"$VERSION"-"$PLATFORM".tar.xz | sha256sum --check
