@@ -11,8 +11,8 @@ export PPROF_PATH=/thirdparty_build/bin/pprof
 echo "ENVOY_SRCDIR=${ENVOY_SRCDIR}"
 
 function setup_gcc_toolchain() {
-  export CC=gcc
-  export CXX=g++
+  export CC=$(which gcc)
+  export CXX=$(which g++)
   echo "$CC/$CXX toolchain configured"
 }
 
@@ -62,8 +62,7 @@ export BAZEL="bazel"
 # Not sandboxing, since non-privileged Docker can't do nested namespaces.
 BAZEL_OPTIONS="--package_path %workspace%:${ENVOY_SRCDIR}"
 export BAZEL_QUERY_OPTIONS="${BAZEL_OPTIONS}"
-export BAZEL_BUILD_OPTIONS="--action_env=PATH=/bin:/usr/bin:/usr/lib/llvm-7/bin --linkopt=-fuse-ld=lld \
-  --strategy=Genrule=standalone --spawn_strategy=standalone \
+export BAZEL_BUILD_OPTIONS="--strategy=Genrule=standalone --spawn_strategy=standalone \
   --verbose_failures ${BAZEL_OPTIONS} --action_env=HOME --action_env=PYTHONUSERBASE \
   --jobs=${NUM_CPUS} --show_task_finish --experimental_generate_json_trace_profile ${BAZEL_BUILD_EXTRA_OPTIONS}"
 export BAZEL_TEST_OPTIONS="${BAZEL_BUILD_OPTIONS} --test_env=HOME --test_env=PYTHONUSERBASE \

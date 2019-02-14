@@ -51,17 +51,6 @@ set +e
 . scl_source enable python27
 set -e
 
-# symbolic links for clang
-pushd /opt/llvm-5.0.1/bin
-ln -s clang++ clang++-5.0
-ln -s clang-format clang-format-5.0
-popd
-
-mkdir -p /usr/lib/llvm-5.0/bin
-pushd /usr/lib/llvm-5.0/bin
-ln -s /opt/llvm-5.0.1/bin/llvm-symbolizer .
-popd
-
 # Setup tcpdump for non-root.
 groupadd pcap
 chgrp pcap /usr/sbin/tcpdump
